@@ -4,7 +4,7 @@ def conexao_socket_servidor_tcp(ip: str = 'localhost', porta: int = 9999) -> Non
     """Cria um socket e disponibiliza-o para conexão.
 
     Args:
-        ip (str, optional): Endereço ip do host. . Defaults to 'localhost'.
+        ip (str, optional): Endereço IP do host. . Defaults to 'localhost'.
         porta (int, optional): Porta na qual o host receberá conexões.. Defaults to 9999.
     """
     try:
@@ -23,15 +23,15 @@ def conexao_socket_servidor_tcp(ip: str = 'localhost', porta: int = 9999) -> Non
     except socket.error as e:
         print(f'Erro: {e}\nNão foi possível estabelecer conexão.')
 
-    except Exception as ex:
-        print(f'Erro: {ex}\nOcorreu um erro inesperado.')
+    except Exception as e:
+        print(f'Erro: {e}\nOcorreu um erro inesperado.')
         
     finally:
         servidor.close()
 
 
 def tarefa_socket_servidor_tcp(socket_servidor: socket.socket) -> bool:
-    """Tarefa que o socket realiza ao se estabelecer uma conexão com o mesmo.
+    """Tarefa que o socket realiza ao se estabelecer uma conexão com o servidor.
 
     Args:
         socket_servidor (socket.socket): Recebe o socket criado anteriormente.
@@ -42,10 +42,10 @@ def tarefa_socket_servidor_tcp(socket_servidor: socket.socket) -> bool:
     try:
         while True:
 
+            mensagem_cliente = socket_servidor.recv(1024).decode()
+
             if not mensagem_cliente:
                 break
-            
-            mensagem_cliente = socket_servidor.recv(1024).decode()
 
             if mensagem_cliente.lower() == 'sair':
                 break
@@ -65,7 +65,17 @@ def tarefa_socket_servidor_tcp(socket_servidor: socket.socket) -> bool:
 
     return True
 
-def finalizar_socket(socket_servidor: socket.socket) -> None:
-    socket_servidor.close()
+def finalizar_socket(socket: socket.socket) -> None:
+    """Tem por objetivo finalizar um endpoint.
 
-conexao_socket_servidor_tcp()
+    Args:
+        socket (socket.socket): Socket que esteja aberto para conexão.
+    """
+    socket.close()
+
+
+def main() -> None: 
+    conexao_socket_servidor_tcp()
+
+if __name__ == '__main__':
+    main()

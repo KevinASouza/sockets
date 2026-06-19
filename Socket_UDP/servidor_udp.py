@@ -2,7 +2,7 @@ import socket
 
 servidor = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-servidor.bind(('localhost', 9999))
+servidor.bind(('127.0.0.1', 9999))
 
 print("Servidor UDP pronto e ouvindo na porta 9999...")
 
